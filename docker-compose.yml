@@ -1,0 +1,61 @@
+version: '2.2'
+
+services:
+  delos:
+    container_name: rap2-delos
+    #image: blackdog1987/rap2-delos:1.0.0
+    image: taomaree/docker-rap2:latest
+    environment:
+      # if you have your own mysql, config it here, and disable the 'mysql' config blow
+      - MYSQL_URL=rap2-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWD=rap2delos
+      - MYSQL_SCHEMA=rap2
+      - REDIS_URL=rap2-redis
+      - REDIS_PORT=6379
+
+      # production / development
+      - NODE_ENV=production
+    working_dir: /app/rap2-delos
+    #privileged: true
+    ###### 'sleep 30 && node scripts/init' will drop the tables
+    ###### RUN ONLY ONCE THEN REMOVE 'sleep 30 && node scripts/init'
+    command: /bin/sh -c 'sleep 30; node scripts/init; node dispatch.js'
+    # init the databases
+#    command: sleep 30 && node scripts/init && node dispatch.js
+    # without init
+    command: node dispatch.js
+    links:
+      - redis
+      - mysql
+    depends_on:
+      - redis
+      - mysql
+    ports:
+      - "38080:8080"  # expose 38080
+
+  rap2-init:
+    image: taomaree/docker-rap2:latest
+    command: 'cd /app/rap2-delos && yarn run create-db'
+    depends_on:
+      - mysql
+
+  redis:
+    container_name: rap2-redis
+    image: redis:4.0.9
+
+
+  mysql:
+    container_name: rap2-mysql
+    image: mysql:5.7.22
+    #ports:
+    #   - 33306:3306
+    volumes:
+      - "./mysql-data:/var/lib/mysql"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;' --innodb-flush-log-at-trx-commit=0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: "rap2"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "rap2delos"
