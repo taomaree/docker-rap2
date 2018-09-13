@@ -14,9 +14,8 @@ services:
       - MYSQL_SCHEMA=rap2
       - REDIS_URL=rap2-redis
       - REDIS_PORT=6379
-
-      # production / development
       - NODE_ENV=production
+      - DELOS_URL=http://rap2.domain.com
     working_dir: /app/rap2-delos
     #privileged: true
     ###### 'sleep 30 && node scripts/init' will drop the tables
