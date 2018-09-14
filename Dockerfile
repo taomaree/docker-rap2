@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget curl git npm libhiredis-dev make gcc g++ nginx
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget curl git npm libhiredis-dev make gcc g++ nginx mysql-client
 
 ADD default.conf /etc/nginx/sites-enabled/default
 
