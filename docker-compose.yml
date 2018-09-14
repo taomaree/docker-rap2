@@ -11,7 +11,7 @@ services:
       - MYSQL_PORT=3306
       - MYSQL_USERNAME=root
       - MYSQL_PASSWD=rap2delos
-      - MYSQL_SCHEMA=rap2
+      - MYSQL_SCHEMA=RAP2_DELOS_APP
       - REDIS_URL=rap2-redis
       - REDIS_PORT=6379
       - NODE_ENV=production
@@ -55,6 +55,6 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;' --innodb-flush-log-at-trx-commit=0
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-      MYSQL_DATABASE: "rap2"
+      MYSQL_DATABASE: "RAP2_DELOS_APP"
       MYSQL_USER: "root"
       MYSQL_PASSWORD: "rap2delos"
