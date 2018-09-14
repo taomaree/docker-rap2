@@ -1,12 +1,23 @@
 version: '2.2'
 
 services:
+  nginx:
+    container_name: rap2-nginx
+    #image: blackdog1987/rap2-delos:1.0.0
+    image: taomaree/rap2:latest
+    command: node dispatch.js
+    links:
+      - delos
+    depends_on:
+      - delos
+    ports:
+      - "38080:80"  # expose 38080
+      
+      
   delos:
     container_name: rap2-delos
-    #image: blackdog1987/rap2-delos:1.0.0
-    image: taomaree/docker-rap2:latest
+    image: taomaree/rap2:latest
     environment:
-      # if you have your own mysql, config it here, and disable the 'mysql' config blow
       - MYSQL_URL=rap2-mysql
       - MYSQL_PORT=3306
       - MYSQL_USERNAME=root
@@ -15,14 +26,14 @@ services:
       - REDIS_URL=rap2-redis
       - REDIS_PORT=6379
       - NODE_ENV=production
-    working_dir: /app/rap2-delos
+    working_dir: /app/rap2-delos/dist
     #privileged: true
     ###### 'sleep 30 && node scripts/init' will drop the tables
     ###### RUN ONLY ONCE THEN REMOVE 'sleep 30 && node scripts/init'
     ###### mysql -e 'CREATE DATABASE IF NOT EXISTS RAP2_DELOS_APP DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;';
     
     ###### mysql -e "select * from rap.users" || npm run create-db
-    command: /bin/sh -c 'sleep 30; node scripts/init; node dispatch.js'
+    ###### command: /bin/sh -c 'sleep 30; node scripts/init; node dispatch.js'
     # init the databases
 #    command: sleep 30 && node scripts/init && node dispatch.js
     # without init
@@ -33,11 +44,10 @@ services:
     depends_on:
       - redis
       - mysql
-    ports:
-      - "38080:8080"  # expose 38080
+
 
   rap2-init:
-    image: taomaree/docker-rap2:latest
+    image: taomaree/rap2:latest
     environment:
       # if you have your own mysql, config it here, and disable the 'mysql' config blow
       - MYSQL_URL=rap2-mysql
@@ -45,9 +55,13 @@ services:
       - MYSQL_USERNAME=root
       - MYSQL_PASSWD=rap2delos
       - MYSQL_SCHEMA=RAP2_DELOS_APP  
-    working_dir: /app/rap2-delos
+    working_dir: /app/rap2-delos/dist
     command: 'mysql -e "select * from ${MYSQL_SCHEMA}.Users;" || npm run create-db'
+    links:
+      - redis
+      - mysql
     depends_on:
+      - redis
       - mysql
 
   redis:
