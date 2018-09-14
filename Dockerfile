@@ -11,3 +11,4 @@ RUN npm install -g yarn typescript serve  \
     && cd /app/rap2-dolores  && sed -i "s/serve.*,/serve: '' ,/g" src/config/config.prod.js && npm install && npm run build \
     && cd /app/rap2-delos    && npm install && npm run build 
 
+
