@@ -15,12 +15,13 @@ services:
       - REDIS_URL=rap2-redis
       - REDIS_PORT=6379
       - NODE_ENV=production
-      - DELOS_URL=http://rap2.domain.com
     working_dir: /app/rap2-delos
     #privileged: true
     ###### 'sleep 30 && node scripts/init' will drop the tables
     ###### RUN ONLY ONCE THEN REMOVE 'sleep 30 && node scripts/init'
     ###### mysql -e 'CREATE DATABASE IF NOT EXISTS RAP2_DELOS_APP DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;';
+    
+    ###### mysql -e "select * from rap.users" || npm run create-db
     command: /bin/sh -c 'sleep 30; node scripts/init; node dispatch.js'
     # init the databases
 #    command: sleep 30 && node scripts/init && node dispatch.js
@@ -37,7 +38,15 @@ services:
 
   rap2-init:
     image: taomaree/docker-rap2:latest
-    command: 'cd /app/rap2-delos && yarn run create-db'
+    environment:
+      # if you have your own mysql, config it here, and disable the 'mysql' config blow
+      - MYSQL_URL=rap2-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWD=rap2delos
+      - MYSQL_SCHEMA=RAP2_DELOS_APP  
+    working_dir: /app/rap2-delos
+    command: 'mysql -e "select * from ${MYSQL_SCHEMA}.Users;" || npm run create-db'
     depends_on:
       - mysql
 
@@ -48,7 +57,7 @@ services:
 
   mysql:
     container_name: rap2-mysql
-    image: mysql:5.7.22
+    image: mysql:5.7.23
     #ports:
     #   - 33306:3306
     volumes:
