@@ -20,6 +20,7 @@ services:
     #privileged: true
     ###### 'sleep 30 && node scripts/init' will drop the tables
     ###### RUN ONLY ONCE THEN REMOVE 'sleep 30 && node scripts/init'
+    ###### mysql -e 'CREATE DATABASE IF NOT EXISTS RAP2_DELOS_APP DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;';
     command: /bin/sh -c 'sleep 30; node scripts/init; node dispatch.js'
     # init the databases
 #    command: sleep 30 && node scripts/init && node dispatch.js
