@@ -20,7 +20,7 @@ services:
     environment:
       - MYSQL_URL=rap2-mysql
       - MYSQL_PORT=3306
-      - MYSQL_USERNAME=root
+      - MYSQL_USERNAME=rap2
       - MYSQL_PASSWD=rap2delos
       - MYSQL_SCHEMA=RAP2_DELOS_APP
       - REDIS_URL=rap2-redis
@@ -52,7 +52,7 @@ services:
       # if you have your own mysql, config it here, and disable the 'mysql' config blow
       - MYSQL_URL=rap2-mysql
       - MYSQL_PORT=3306
-      - MYSQL_USERNAME=root
+      - MYSQL_USERNAME=rap2
       - MYSQL_PASSWD=rap2delos
       - MYSQL_SCHEMA=RAP2_DELOS_APP  
     working_dir: /app/rap2-delos/dist
@@ -78,7 +78,7 @@ services:
       - "/srv/rap2-mysql/mysql-data:/var/lib/mysql"
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4;' --default-authentication-plugin=mysql_native_password --innodb-flush-log-at-trx-commit=0 
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-      MYSQL_DATABASE: "RAP2_DELOS_APP"
-      MYSQL_USER: "root"
-      MYSQL_PASSWORD: "rap2delos"
+      - MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      - MYSQL_DATABASE: "RAP2_DELOS_APP"
+      - MYSQL_USER: "rap2"
+      - MYSQL_PASSWORD: "rap2delos"
