@@ -56,7 +56,7 @@ services:
       - MYSQL_PASSWD=rap2delos
       - MYSQL_SCHEMA=RAP2_DELOS_APP  
     working_dir: /app/rap2-delos/dist
-    command: 'mysql -e "select * from ${MYSQL_SCHEMA}.Users;" || npm run create-db'
+    command: 'mysql -h ${MYSQL_URL} -u ${MYSQL_USERNAME} -p ${MYSQL_PASSWD} -e "select * from ${MYSQL_SCHEMA}.Users;" || npm run create-db'
     links:
       - redis
       - mysql
