@@ -1,4 +1,5 @@
-FROM node:8.12.0-stretch AS build
+#FROM node:8.12.0-stretch AS build
+FROM ubuntu:18.04 AS build
 
 WORKDIR /tmp
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget curl git npm libhiredis-dev make gcc g++ 
@@ -13,9 +14,10 @@ RUN npm install -g yarn typescript serve  \
     && cp -rv /tmp/rap2-delos/dist /app/rap2-delos
 
 
-FROM node:8.12.0-stretch
+#FROM node:8.12.0-stretch
+FROM ubuntu:18.04
 COPY --from=build /app  /app/
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libhiredis-dev npm nginx-light default-mysql-client runit \
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libhiredis-dev npm nginx default-mysql-client runit \
     && bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/nginx -g \"daemon off;\"" > /etc/service/nginx/run' \
     && bash -c 'echo -e "#!/bin/bash\nexec /usr/bin/node /app/rap2-delos/dist/dispatch.js " > /etc/service/delos/run' \
     && chmod 755 /etc/service/delos/run /etc/service/nginx/run && \
