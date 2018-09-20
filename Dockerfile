@@ -18,9 +18,11 @@ RUN npm install -g yarn typescript serve  \
 FROM ubuntu:18.04
 COPY --from=build /app  /app/
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libhiredis-dev npm nginx default-mysql-client runit \
+    && mkdir -p /etc/service/nginx /etc/service/nodejs
     && bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/nginx -g \"daemon off;\"" > /etc/service/nginx/run' \
-    && bash -c 'echo -e "#!/bin/bash\nexec /usr/bin/node /app/rap2-delos/dist/dispatch.js " > /etc/service/delos/run' \
-    && chmod 755 /etc/service/delos/run /etc/service/nginx/run && \
+    && bash -c 'echo -e "#!/bin/bash\nexec /usr/bin/node /app/rap2-delos/dist/dispatch.js " > /etc/service/nodejs/run' \
+    && chmod 755 /etc/service/nginx/run /etc/service/nodejs/run && \
+    
 ADD default.conf /etc/nginx/sites-enabled/default
 
 CMD ["runsvdir", "/etc/service"]
