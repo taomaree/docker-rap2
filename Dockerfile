@@ -16,6 +16,12 @@ RUN npm install -g yarn typescript serve  \
 
 #FROM node:8.12.0-stretch
 FROM ubuntu:18.04
+
+ENV DEBIAN_FRONTEND="teletype" \
+    LANG="en_US.UTF-8" \
+    LANGUAGE="en_US:en" \
+    LC_ALL="en_US.UTF-8"
+    
 COPY --from=build /app  /app/
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libhiredis-dev npm nginx default-mysql-client runit cron \
     && mkdir -p /etc/service/nginx /etc/service/nodejs /etc/service/cron \
