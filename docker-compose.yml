@@ -55,7 +55,7 @@ services:
       - NODE_ENV=production
     working_dir: /app/rap2-delos/dist
     #command: 'mysql -h ${MYSQL_URL} -u ${MYSQL_USERNAME} -p ${MYSQL_PASSWD} -e "select * from ${MYSQL_SCHEMA}.Users;" || npm run create-db'
-    command: ["sh", "-c", "mysql -h ${MYSQL_URL} -u ${MYSQL_USERNAME} -p ${MYSQL_PASSWD} -e \"select * from ${MYSQL_SCHEMA}.Users;\" || npm run create-db"]
+    command: ["bash", "-c", "mysql -h $${MYSQL_URL} -u $${MYSQL_USERNAME} -p $${MYSQL_PASSWD} -e \"select * from $${MYSQL_SCHEMA}.Users;\" || npm run create-db"]
     links:
       - mysql
     depends_on:
