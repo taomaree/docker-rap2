@@ -5,7 +5,6 @@ source /etc/profile
 #[ -z "${MYSQL_USER}" ] && { echo "=> MYSQL_USER cannot be empty" && exit 1; }
 #[ -z "${MYSQL_PASS:=$MYSQL_PASSWORD}" ] && { echo "=> MYSQL_PASS cannot be empty" && exit 1; }
 
-
 MYSQL_HOST=${MYSQL_URL:-"localhost"}
 MYSQL_USER=${MYSQL_USERNAME:-"root"}
 MYSQL_PASS=${MYSQL_PASSWD:-''}
