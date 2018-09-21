@@ -10,8 +10,8 @@ RUN npm install -g yarn typescript serve  \
     && git clone https://github.com/thx/rap2-dolores.git \
     && cd /tmp/rap2-dolores  && sed -i "s/serve.*,/serve: '' ,/g" src/config/config.prod.js && npm install && npm run build \
     && cd /tmp/rap2-delos    && npm install && npm run build \
-    && mkdir -p /app/rap2-dolores /app/rap2-delos && cp -rv /tmp/rap2-dolores /app/ \
-    && cp -rv /tmp/rap2-delos/dist /app/rap2-delos
+    && mkdir -p /app/rap2-dolores /app/rap2-delos && cp -rv /tmp/rap2-dolores/build /app/rap2-dolores \
+    && cp -rv /tmp/rap2-delos /app
 
 
 #FROM node:8.12.0-stretch
