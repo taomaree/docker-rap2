@@ -14,6 +14,8 @@ services:
       - REDIS_PORT=6379
       - NODE_ENV=production
     working_dir: /app/rap2-delos/dist
+    volumes:
+      - "/srv/rap2-mysql/mysql-backup:/backup"
     ports:
       - "38080:80"  # expose 38080
     links:
