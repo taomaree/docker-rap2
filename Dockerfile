@@ -17,12 +17,16 @@ RUN npm install -g yarn typescript serve  \
 #FROM node:8.12.0-stretch
 FROM ubuntu:18.04
 COPY --from=build /app  /app/
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libhiredis-dev npm nginx default-mysql-client runit \
-    && mkdir -p /etc/service/nginx /etc/service/nodejs \
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libhiredis-dev npm nginx default-mysql-client runit cron \
+    && mkdir -p /etc/service/nginx /etc/service/nodejs /etc/service/cron \
     && bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/nginx -g \"daemon off;\"" > /etc/service/nginx/run' \
     && bash -c 'echo -e "#!/bin/bash\nexec /usr/bin/node /app/rap2-delos/dist/dispatch.js " > /etc/service/nodejs/run' \
-    && chmod 755 /etc/service/nginx/run /etc/service/nodejs/run 
+    && bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/cron -f" > /etc/service/cron/run' \
+    && chmod 755 /etc/service/nginx/run /etc/service/nodejs/run /etc/service/cron/run \
+    && bash -c 'echo "0 3 * * * /bin/bash /mysql_backup.sh >> /var/log/mysql_backup.log 2>&1" > /etc/cron.d/mysql_backup'
     
 ADD default.conf /etc/nginx/sites-enabled/default
+
+ADD mysql_backup.sh /
 
 CMD ["runsvdir", "/etc/service"]
