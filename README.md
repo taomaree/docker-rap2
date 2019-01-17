@@ -10,8 +10,9 @@ wget -c https://github.com/taomaree/docker-rap2/raw/master/docker-compose.yml
 
 ## change default http port 38080 to other port, if needed
 
-docker-compose start
+docker-compose up -d
 ```
 
 open http://x.x.x.x:38080/
+
 
