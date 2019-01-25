@@ -33,3 +33,5 @@ ADD default.conf /etc/nginx/sites-enabled/default
 ADD mysql_backup.sh /
 
 CMD ["runsvdir", "/etc/service"]
+
+
