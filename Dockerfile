@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     && bash -c 'echo -e "#!/bin/bash\nexec /usr/bin/node /app/rap2-delos/dist/dispatch.js " > /etc/service/nodejs/run' \
     && bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/cron -f" > /etc/service/cron/run' \
     && chmod 755 /etc/service/nginx/run /etc/service/nodejs/run /etc/service/cron/run \
+    && sed -i '/session    required     pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/cron \
     && bash -c 'echo "0 3 * * * /bin/bash /mysql_backup.sh >> /var/log/mysql_backup.log 2>&1" > /etc/cron.d/mysql_backup'
     
 ADD default.conf /etc/nginx/sites-enabled/default
