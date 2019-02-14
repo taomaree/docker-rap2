@@ -3,7 +3,7 @@ version: '2.2'
 services:
   delos:
     container_name: rap2-delos
-    image: taomaree/rap2:1.0.4
+    image: taomaree/rap2:1.0.5
     environment:
       - MYSQL_URL=rap2-mysql
       - MYSQL_PORT=3306
@@ -28,7 +28,7 @@ services:
 
   redis:
     container_name: rap2-redis
-    image: redis:4.0.9
+    image: redis:4.0
 
 
   mysql:
@@ -47,7 +47,7 @@ services:
 
   rap2-init:
     container_name: rap2-init
-    image: taomaree/rap2:1.0.4
+    image: taomaree/rap2:1.0.5
     environment:
       - MYSQL_URL=rap2-mysql
       - MYSQL_PORT=3306
