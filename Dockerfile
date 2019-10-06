@@ -1,6 +1,8 @@
 #FROM node:8.12.0-stretch AS build
 FROM ubuntu:18.04 AS build
 
+ENV delos_tag=e3ed654  dolores_tag=35d0718
+
 WORKDIR /tmp
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget curl git npm libhiredis-dev make gcc g++ 
 
@@ -8,8 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 RUN npm install -g yarn typescript serve  \
     && git clone https://github.com/thx/rap2-delos.git \
     && git clone https://github.com/thx/rap2-dolores.git 
-RUN cd /tmp/rap2-dolores  && sed -i "s/serve.*,/serve: '' ,/g" src/config/config.prod.ts && npm install && npm run build 
-RUN cd /tmp/rap2-delos    ;  sed -i -e 's/noImplicitThis".*,/noImplicitThis": false,/g' -e 's/noImplicitAny".*,/noImplicitAny": false,/g' tsconfig.json ; npm install; npm install; npm run build ;
+RUN cd /tmp/rap2-dolores  ; git checkout $dolores_tag ; sed -i "s/serve.*,/serve: '' ,/g" src/config/config.prod.ts && npm install && npm run build 
+RUN cd /tmp/rap2-delos    ; git checkout $delos_tag   ; sed -i -e 's/noImplicitThis".*,/noImplicitThis": false,/g' -e 's/noImplicitAny".*,/noImplicitAny": false,/g' tsconfig.json ; npm install; npm install; npm run build ;
 RUN mkdir -p /app/rap2-dolores /app/rap2-delos && cp -rv /tmp/rap2-dolores/build /app/rap2-dolores \
     && cp -rv /tmp/rap2-delos /app
 
