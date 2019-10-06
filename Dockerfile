@@ -10,9 +10,9 @@ RUN npm install -g yarn typescript serve  \
     && git clone https://github.com/thx/rap2-delos.git \
     && git clone https://github.com/thx/rap2-dolores.git 
     
-RUN cd /tmp/rap2-delos    ; git checkout $delos_tag   ; sed -i -e 's/noImplicitThis".*,/noImplicitThis": false,/g' -e 's/noImplicitAny".*,/noImplicitAny": false,/g' tsconfig.json ; npm install; npm install; npm run build ;
+RUN cd /tmp/rap2-delos    ; git checkout $delos_tag   ; sed -i -e 's/noImplicitThis".*,/noImplicitThis": false,/g' -e 's/noImplicitAny".*,/noImplicitAny": false,/g' tsconfig.json ; npm install; npm install; npm run build;
 
-RUN cd /tmp/rap2-dolores  ; git checkout $dolores_tag ; sed -i "s/serve.*,/serve: '' ,/g" src/config/config.prod.ts && npm install && npm run build 
+RUN cd /tmp/rap2-dolores  ; git checkout $dolores_tag ; sed -i "s/serve.*,/serve: '' ,/g" src/config/config.prod.ts; npm install; npm install; npm run build 
 
 RUN mkdir -p /app/rap2-dolores /app/rap2-delos && cp -rv /tmp/rap2-dolores/build /app/rap2-dolores \
     && cp -rv /tmp/rap2-delos /app
